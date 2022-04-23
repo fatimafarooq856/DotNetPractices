@@ -1,5 +1,7 @@
 ﻿using BAL.User;
+using DAL;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace BestPractices
@@ -19,7 +21,7 @@ namespace BestPractices
             configuration = new ConfigurationBuilder()
                  .SetBasePath(env.ContentRootPath)
                  .AddJsonFile("appsettings.json")
-                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                // .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                  .Build();
         }
         public void ConfigureServices(IServiceCollection services)
@@ -27,9 +29,10 @@ namespace BestPractices
 
             #region Inject Services
 
-            services.AddScoped<IUserInterface, User>();           
+            services.AddScoped<IUserInterface, User>();
 
             #endregion
+            services.AddDbContext<TestContext>(item => item.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),x => x.UseNodaTime()));
 
             //services.Configure<AuthCredential>(configuration.GetSection("AuthCredential"));
             //services.Configure<Jwt>(configuration.GetSection("Jwt"));

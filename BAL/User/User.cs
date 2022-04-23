@@ -85,7 +85,7 @@ namespace BAL.User
     //Custom implementation of .Net object camparison
     class AppStudentComparer : IEqualityComparer<Student>, IComparer<Student>
     {
-        public bool Equals(Student x, Student y)
+        public bool Equals(Student? x, Student? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -107,8 +107,10 @@ namespace BAL.User
             return hashCodeValue;
         }
 
-        public int Compare(Student x, Student y)
+        public int Compare(Student? x, Student? y)
         {
+            if (ReferenceEquals(x, null)) return 0;
+            if (ReferenceEquals(y, null)) return 0;
             return GetHashCode(x) - GetHashCode(y);
         }
     }
