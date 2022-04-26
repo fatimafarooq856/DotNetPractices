@@ -41,15 +41,15 @@ namespace BestPractices
             //configuration.GetSection("Jwt").Bind(jwt, c => c.BindNonPublicProperties = true);
             //Static.Settings = settings;
             //Static.Jwt = jwt;
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy(
-            //      "CorsPolicy",
-            //      builder => builder.WithOrigins(Static.Settings.CorsUrl)
-            //      .AllowAnyMethod()
-            //      .AllowAnyHeader()
-            //      .AllowCredentials());
-            //});
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                  "CorsPolicy",
+                  builder => builder.WithOrigins("http://localhost:4200")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials());
+            });
             //services.AddDbContext<KioskContext>(item => item.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             //services.AddApiVersioning(x =>
             //{

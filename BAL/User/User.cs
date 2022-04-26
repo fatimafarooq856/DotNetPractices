@@ -81,6 +81,18 @@ namespace BAL.User
             }
             //Perform task in case objects not equel
         }
+        public async Task AddUsers(string value)
+        {
+            try
+            {
+                var users = new List<UserDto>();
+                users.Add(new UserDto() { Id = 1, Name = value });
+            }
+            catch (Exception)
+            {
+                
+            }
+        }
     }
     //Custom implementation of .Net object camparison
     class AppStudentComparer : IEqualityComparer<Student>, IComparer<Student>

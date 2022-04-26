@@ -32,8 +32,10 @@ namespace BestPractices.Controllers
 
         // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post(UserDto userObj)
         {
+            await _user.AddUsers(userObj.Name);
+            return Ok();
         }
 
         // PUT api/<UserController>/5

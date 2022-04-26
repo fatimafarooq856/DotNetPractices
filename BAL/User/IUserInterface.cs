@@ -9,5 +9,6 @@ namespace BAL.User
     public interface IUserInterface
     {
         Task<IEnumerable<Student>> GetUsers();
+        Task AddUsers(string value);
     }
 }
