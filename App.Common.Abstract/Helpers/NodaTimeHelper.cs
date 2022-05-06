@@ -1,7 +1,12 @@
 ﻿using AutoMapper;
 using NodaTime;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace App.Utils
+namespace App.Common.Abstract.Helpers
 {
 	public static class NodaTimeHelper
 	{

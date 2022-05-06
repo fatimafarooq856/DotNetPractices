@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using BAL.User;
+using BAL.UserService;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,13 @@ namespace BAL
     {
         public AutoMapperProfile()
         {
-            CreateMap<UserDto,Student> ()
-               .ForMember(x => x.NIC, opt => opt.Ignore())
-               .ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id.Encode())); ;
+            CreateMap<UserDto, Student>()
+               .ForMember(x => x.NIC, opt => opt.Ignore());
+               //.ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id.Encode()));
+
+            CreateMap<UserDto, User>();
+                //.ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id.Encode()));
+
         }
     }
 }

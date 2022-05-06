@@ -1,4 +1,5 @@
-﻿using BAL.User;
+﻿using App.Common.Campatibility.Extensions;
+using BAL.UserService;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -34,14 +35,18 @@ namespace BestPractices.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(UserDto userObj)
         {
-            await _user.AddUsers(userObj.Name);
-            return Ok();
+            var userId = User.GetOriginalOrDefaultUserId();
+            var getUserId = await _user.AddUsers(userObj, userId);
+            return Ok(getUserId);
         }
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, UserDto userObj)
         {
+            var userId = User.GetOriginalOrDefaultUserId();
+            await _user.UpdateUsers(id, userObj, userId);
+            return Ok();
         }
 
         // DELETE api/<UserController>/5

@@ -44,20 +44,17 @@ export class MethodService {
         })
       );
   }
-  Post(url: string, model: any): Observable<any> {
-   
+  Post(url: string, model: any): Observable<any> {   
     return this.http
       .post<any>(`${environment.apiUrl}` + url, model, this.options)
       .pipe(
-        map((response: Response) => {
-         
+        map((response: Response) => {         
           return response;
         })
       );
   }
 
-  FormData(url: string, model: any): Observable<any> {
-    
+  FormData(url: string, model: any): Observable<any> {    
     return this.http
       .post<any>(
         `${environment.apiUrl}` + url,
