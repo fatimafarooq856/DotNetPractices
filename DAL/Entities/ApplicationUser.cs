@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-   public class User: IdentityUser
+    [Table("AspNetUsers")]
+    public class User: IdentityUser
     {
         [Column(TypeName = "nvarchar(150)")]
         public string? FullName { get; set; }

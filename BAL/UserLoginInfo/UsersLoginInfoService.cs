@@ -34,8 +34,7 @@ namespace BAL.UserLoginInfo
 		public async Task<bool> CheckUserEmail(string email)
 		{
 			var user = await _userManager.FindByEmailAsync(email);
-			return (user != null)? true: false ;
-			
+			return (user != null)? true: false;			
 		}
 		public async Task<bool> CheckUserPassword(User user, string password)
 		{

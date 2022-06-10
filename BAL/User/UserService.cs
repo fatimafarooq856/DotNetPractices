@@ -2,33 +2,17 @@
 using App.Utils;
 using App.Utils.Extensions;
 using AutoMapper;
+using BAL.Model;
 using BAL.UserLoginInfo;
 using DAL;
 using DAL.Entities;
 using KellermanSoftware.CompareNetObjects;
+using Z.EntityFramework.Extensions;
 using System.Data.Entity;
 
 namespace BAL.UserService
 {
-    public class UserDto
-    {
-        //public int Id { get; set; }
-        public string? FullName { get; set; }
-        public string? Image { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool IsActive { get; set; }
-        public string? UserName { get; set; }
-        public string? Email { get; set; }
-        public string? Password { get; set; }
-       
-    }
-    public class Student
-    {
-        public string? Id { get; set; }
-        public string? Name { get; set; }
-        public string? Class { get; set; }
-        public string? NIC { get; set; }
-    }
+   
 
     public class UserService : IUserInterface
     {
@@ -59,8 +43,6 @@ namespace BAL.UserService
             {
                 return new List<Student>();
             }
-
-
         }
         void CompareUsers(List<Student> students1, List<Student> students2)
         {
@@ -95,12 +77,11 @@ namespace BAL.UserService
             }
             //Perform task in case objects not equel
         }
-        public async Task<string> AddUsers(UserDto model, int byUserId)
+        public async Task<string> AddUsers(UserDto model)
         {
             try
             {
-                //var addUser = _mapper.Map<Product>(userObj);                
-
+                //var addUser = _mapper.Map<Product>(userObj); 
                 //addUser.AddCreatedInfo(byUserId.ToString());
                 //_coreContext.Products.Add(addUser);
                 //await _coreContext.SaveChangesAsync();
@@ -111,38 +92,19 @@ namespace BAL.UserService
                     UserName = model.UserName,
                     FullName = model.FullName,
                     Created = NodaTimeHelper.Now
-                    //UserRoles = model.RoleIds.Select(x => new UserRole() { RoleId = x, ClientId = clientId }).ToList(),
-                    //Guid = Guid.NewGuid()
                 };
 
                 //newUser.AddCreatedInfo(byUserGuid);
                 //var result = await userManager.CreateAsync(new ApplicationUser() { UserName = model.Name, StoreId = db.StoreLocations.Where(x => x.Id == Static.LoggedUserInfo.StoreLocationId).Select(s => s.Store.Id).FirstOrDefault(), Email = model.Email, StoreLocationId = Static.LoggedUserInfo.StoreLocationId.IsNullOrZero() ? 0 : Static.LoggedUserInfo.StoreLocationId, CreatedDate = DateTime.Now }, model.Password);
                 var aspNetUser = await _usersInfoService.CheckUserEmail(model.Email);
-                if(aspNetUser != null)
+                if(aspNetUser)
                     throw new ApplicationException($"{nameof(User)} already exist!");
 
                 var getUser = await _usersInfoService.AddNewUser(newUser);
                 await _usersInfoService.AddUserRole(newUser);
-                //await userManager.AddToRoleAsync(newUser,"ADMIN");
-                //ApplicationRole identityRole = await roleManager.FindByNameAsync(model.RoleName);
-                //List<int> moduleIds = db.RoleModulePermissions.Where(x => x.RoleId == identityRole.Id).Select(x => x.ModuleId).ToList();
-                //List<UserModulePermissions> listUserModulePermission = new List<UserModulePermissions>();
-                //if (!ReferenceEquals(moduleIds, null))
-                //{
-                //    moduleIds.ForEach(x =>
-                //    {
-                //        UserModulePermissions moduleUserPermission = new UserModulePermissions();
-                //        moduleUserPermission.AspNetUserId = model.Code;
-                //        moduleUserPermission.ModuleId = x;
-                //        listUserModulePermission.Add(moduleUserPermission);
-                //    });
-                //}
-                //await db.UserModulePermissions.AddRangeAsync(listUserModulePermission);
-                //await db.SaveChangesAsync();
-                //response.HttpCode = HttpStatusCode.OK;
                 return getUser.Id;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return string.Empty;
             }
@@ -151,30 +113,42 @@ namespace BAL.UserService
         {
             try
             {
-                var userEntity = await  _coreContext.Products.FirstOrDefaultAsync(z => z.Id == id);
-                if(userEntity == null)                
-                    throw new ApplicationException($"{nameof(Product)} does not exist!");
-                userEntity = _mapper.Map<Product>(userObj);
-                userEntity.AddUpdatedInfo(byUserId.ToString());
+                //var userEntity = await  _coreContext.Products.FirstOrDefaultAsync(z => z.Id == id);
+                //if(userEntity == null)                
+                //    throw new ApplicationException($"{nameof(Product)} does not exist!");
+                //userEntity = _mapper.Map<Product>(userObj);
+                //userEntity.AddUpdatedInfo(byUserId.ToString());
             }
             catch (Exception)
             {
 
             }
         }
-        //public async Task DeleteLoan(int clientId, int loanId, Guid byUserGuid)
-        //{
-        //    var loan = await _coreContext.Loans
-        //        .Where(x => x.ClientId == clientId && x.Id == loanId)
-        //        .FirstOrDefaultAsync();
+        public async Task AddProducts(ProductDto model)
+        {
+            try
+            {                
+                if (model!=null)
+                {
+                    var product = _mapper.Map<Product>(model);
+                    List<Product> products = new List<Product>();
+                    for (int i = 0; i < 5000; i++)
+                    {
+                        products.Add(product);
+                    }
 
-        //    if (loan == null)
-        //        throw new ApplicationException($"{nameof(Loan)} does not exist!");
-        //    loan.SetDeletedInfo(byUserGuid);
-        //    //_coreContext.Loans.Remove(loan);
-        //    await _coreContext.SaveChangesAsync();
-        //    _updateNotificationService.NotifyOthersEntityDeletedFireAndForget(clientId, loanId, EntityNotificationType.Loan);
-        //}
+                     await _coreContext.Products.AddRangeAsync(products);
+                   // _coreContext.Products.BulkInsert(products);
+                   // _coreContext.BulkInsert<Product>(products);
+                    await _coreContext.SaveChangesAsync();
+                }
+                             
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
     }
     //Custom implementation of .Net object camparison
     class AppStudentComparer : IEqualityComparer<Student>, IComparer<Student>

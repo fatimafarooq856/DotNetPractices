@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
-using BAL.UserService;
+using BAL.Model;
 using DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NodaTime;
 
 namespace BAL
 {
@@ -15,12 +11,17 @@ namespace BAL
     {
         public AutoMapperProfile()
         {
+
+            CreateMap<LocalDate, DateTime>();
+            CreateMap<DateTime, LocalDate>();
             CreateMap<UserDto, Student>()
                .ForMember(x => x.NIC, opt => opt.Ignore());
-               //.ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id.Encode()));
+            //.ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id.Encode()));
 
             CreateMap<UserDto, User>();
-                //.ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id.Encode()));
+            //.ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id.Encode()));
+            CreateMap<ProductDto, Product>()
+                .ForMember(x => x.Id, opt => opt.Ignore());
 
         }
     }

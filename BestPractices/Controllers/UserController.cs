@@ -1,4 +1,5 @@
 ﻿using App.Common.Campatibility.Extensions;
+using BAL.Model;
 using BAL.UserService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,8 +36,8 @@ namespace BestPractices.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(UserDto userObj)
         {
-            var userId = User.GetOriginalOrDefaultUserId();
-            var getUserId = await _user.AddUsers(userObj, userId);
+            //var userId = User.GetOriginalOrDefaultUserId();
+            var getUserId = await _user.AddUsers(userObj/*, userId*/);
             return Ok(getUserId);
         }
 
@@ -46,6 +47,12 @@ namespace BestPractices.Controllers
         {
             var userId = User.GetOriginalOrDefaultUserId();
             await _user.UpdateUsers(id, userObj, userId);
+            return Ok();
+        }
+        [HttpPost("saveproduct")]
+        public async Task<IActionResult> SaveProduct(ProductDto product)
+        {
+            await _user.AddProducts(product);
             return Ok();
         }
 
