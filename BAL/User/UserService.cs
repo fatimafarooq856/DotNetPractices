@@ -9,6 +9,7 @@ using DAL.Entities;
 using KellermanSoftware.CompareNetObjects;
 using Z.EntityFramework.Extensions;
 using System.Data.Entity;
+using System.Diagnostics;
 
 namespace BAL.UserService
 {
@@ -17,11 +18,14 @@ namespace BAL.UserService
     public class UserService : IUserInterface
     {
         private readonly IMapper _mapper;
-        private readonly TestContext _coreContext;
+        private Context _db;
+       // private readonly Context _coreContext;
         private readonly IUsersLoginInfoService _usersInfoService;
-        public UserService(IMapper mapper, TestContext coreContext, IUsersLoginInfoService usersInfoService)
+        System.Diagnostics.Stopwatch watch ;
+        public UserService(IMapper mapper, Context coreContext, IUsersLoginInfoService usersInfoService)
         {
-            _coreContext = coreContext;
+          //  _coreContext = coreContext;
+            _db = coreContext;
             _mapper = mapper;
             _usersInfoService = usersInfoService;
         }
@@ -124,24 +128,42 @@ namespace BAL.UserService
 
             }
         }
+        public void StartWatch()
+        {
+            watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
+        }
+        public void StopWatch()
+        {
+            watch.Stop();
+            Debug.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
+        }
         public async Task AddProducts(ProductDto model)
         {
             try
-            {                
-                if (model!=null)
+            {
+                StartWatch();
+                if (model!= null)
                 {
-                    var product = _mapper.Map<Product>(model);
+                    //var product = _mapper.Map<Product>(model);
                     List<Product> products = new List<Product>();
                     for (int i = 0; i < 5000; i++)
                     {
+                        var product = _mapper.Map<Product>(model);
                         products.Add(product);
                     }
+                    //Execution Time: 7839 ms
+                    //Execution Time: 10704 ms
+                    //await _db.Products.AddRangeAsync(products);
+                    //await _db.SaveChangesAsync();
 
-                     await _coreContext.Products.AddRangeAsync(products);
-                   // _coreContext.Products.BulkInsert(products);
-                   // _coreContext.BulkInsert<Product>(products);
-                    await _coreContext.SaveChangesAsync();
+                    //using ef plus framework
+                    //Execution Time: 7839 ms
+                    //Execution Time: 12853 ms
+                    await _db.Products.BulkInsertAsync(products);
+                    await _db.BulkSaveChangesAsync();
                 }
+                StopWatch();
                              
             }
             catch (Exception ex)

@@ -40,22 +40,9 @@ namespace BestPractices
             services.AddScoped<IUserInterface, UserService>();
             services.AddScoped<IUsersLoginInfoService, UsersLoginInfoService>();
             #endregion
-            services.AddDbContext<TestContext>(item => item.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"), x => x.UseNodaTime()));
-            //services.AddIdentityCore<User, ApplicationRole> (opt =>
-            //{
-            //    opt.Lockout.MaxFailedAccessAttempts = 5;
-            //    opt.Lockout.DefaultLockoutTimeSpan = new TimeSpan(0, 10, 0);
-            //    opt.Password.RequiredLength = 8;
-            //    opt.Password.RequireDigit = true;
-            //    opt.Password.RequireLowercase = true;
-            //    opt.Password.RequireNonAlphanumeric = false;
-            //    opt.Password.RequireUppercase = true;
-            //    opt.User.RequireUniqueEmail = true;
-            //})
-            //.AddEntityFrameworkStores<TestContext>()
-            //.AddDefaultTokenProviders();
+            services.AddDbContext<Context>(item => item.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"), x => x.UseNodaTime()));
             services.AddIdentity<User, ApplicationRole>()
-                  .AddEntityFrameworkStores<TestContext>()
+                  .AddEntityFrameworkStores<Context>()
                   .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
@@ -93,41 +80,7 @@ namespace BestPractices
             //Static.SetHttpContextAccessor(accessor, env);
             services.AddDistributedMemoryCache();
         }
-        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
-        //{
-        //    loggerFactory.AddSerilog();
-        //    app.UseCors("CorsPolicy");
-        //    if (env.IsDevelopment())
-        //    {
-        //        app.UseDeveloperExceptionPage();
-        //    }
-        //    else
-        //    {
-        //        app.UseExceptionHandler("/Home/Error");
-        //    }
-
-        //    // Enable middleware to serve generated Swagger as a JSON endpoint.
-        //    app.UseSwagger();
-        //    app.UseMiddleware<LogRequestMiddleware>();
-        //    // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-        //    // specifying the Swagger JSON endpoint.
-        //    app.UseSwaggerUI(c =>
-        //    {
-        //        // c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kiosk API versio 1.0");
-        //    });
-        //    app.UseHttpsRedirection();
-        //    app.UseRouting();
-        //    app.UseAuthentication();
-        //    app.UseAuthorization();
-        //    //app.UseMiddleware<OAuth>();
-        //    app.UseEndpoints(endpoints =>
-        //    {
-        //        endpoints.MapControllers();
-        //    });
-
-        //    app.UseStaticFiles();
-        //}
-        //, IHttpClientFactory httpClientFactory
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IOptions<AppApiOptions> options,
             IHostApplicationLifetime hostApplicationLifetime)
         {
@@ -173,30 +126,7 @@ namespace BestPractices
             {
                 endpoints.MapControllers();
             });
-            ///ConfigureAppClientProxy(app, options.Value, httpClientFactory);
-            ///
-   //          if (!string.IsNullOrWhiteSpace(options.Urls?.WebSpa))
-			//{
-   //             app.MapWhen(context => true,
-   //                 builder =>
-   //                 {
-   //                     builder.Run(async context =>
-   //                     {
-   //                         var client = httpClientFactory.CreateClient(HttpClientNamesAppApi.ApiClient);
-   //                         var requestPath = $"{context.Request.Path}{context.Request.QueryString.ToUriComponent()}";
-
-   //                         try
-   //                         {
-   //                             using var response = await client.GetAsync(requestPath, context.RequestAborted);
-   //                             await HttpContextHelper.CopyHttpClientResponseToHttpContext(context, response);
-   //                         }
-   //                         catch (TaskCanceledException)
-   //                         {
-   //                         }
-   //                     });
-   //                 });
-   //         }
-            //////
+    
 
             hostApplicationLifetime.ApplicationStopped.Register(Log.CloseAndFlush);
 
