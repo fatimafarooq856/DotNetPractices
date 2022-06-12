@@ -23,6 +23,12 @@ namespace DAL
         public DbSet<ApplicationRole> AppRoles { get; set; }
         public DbSet<User> AppUsers { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<AppFile> AppFiles { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<BrandFile> BrandFiles { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<PromotionFile> PromotionFiles { get; set; }
 
 
     }

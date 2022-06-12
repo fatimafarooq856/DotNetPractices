@@ -1,6 +1,6 @@
 ﻿using App.Common.Campatibility.Extensions;
+using BAL;
 using BAL.Model;
-using BAL.UserService;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

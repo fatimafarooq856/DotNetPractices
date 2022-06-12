@@ -11,7 +11,7 @@ using Z.EntityFramework.Extensions;
 using System.Data.Entity;
 using System.Diagnostics;
 
-namespace BAL.UserService
+namespace BAL
 {
    
 

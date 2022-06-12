@@ -3,8 +3,8 @@ using App.Common.Campatibility.Configurations;
 using App.Common.Campatibility.Filters;
 using App.Common.Compability.Middlewares;
 using App.Utils.Entities;
+using BAL;
 using BAL.UserLoginInfo;
-using BAL.UserService;
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -38,6 +38,7 @@ namespace BestPractices
             _configuration.Bind(apiOptions);
             #region Inject Services
             services.AddScoped<IUserInterface, UserService>();
+            services.AddScoped<IProductInterface, ProductService>();
             services.AddScoped<IUsersLoginInfoService, UsersLoginInfoService>();
             #endregion
             services.AddDbContext<Context>(item => item.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"), x => x.UseNodaTime()));

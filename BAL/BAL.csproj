@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="CompareNETObjects" Version="4.76.0" />
-    <PackageReference Include="Z.EntityFramework.Extensions" Version="6.14.0" />
     <PackageReference Include="Z.EntityFramework.Plus.EF6" Version="6.14.0" />
     <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="6.14.0" />
   </ItemGroup>

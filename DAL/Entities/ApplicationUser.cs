@@ -19,5 +19,6 @@ namespace DAL.Entities
         public bool IsAdmin { get; set; }
         public bool IsPublic { get; set; }
         public Instant? Created { get; set; }
+        public virtual ICollection<AppFile> Files { get; set; }
     }
 }
